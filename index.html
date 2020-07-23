@@ -18,7 +18,13 @@
         let ctx = paincanvas.getContext("2d");
         let currentPlayer = 0;
         let lucban;
-        let giatrihuonggio ;
+
+
+        let nhacnens = function () {
+            nhacnen = new Audio("audio/nhacnen.mp3")
+            nhacnen.play();
+        }
+        nhacnens();
 
 
         let sound =function () {
@@ -26,10 +32,13 @@
             danban.play();
         }
 
-        let nhacnens = function () {
-            nhacnen = new Audio("audio/nhacnen.mp3")
-            nhacnen.play();
+
+
+        let tiengkeus = function(){
+            tiengkeu = new Audio("audio/tiengno.wav");
+            tiengkeu.play();
         }
+
 
         let sukienbanphim = function (evt) {
             switch (evt.keyCode) {
@@ -54,21 +63,19 @@
                     if (bullets[1].isFire) return;          //
                     if (currentPlayer ===0){
                         luc = kimlucs.getx()                //lấy giá tọa độ x ngay tại lúc ấn dấu cách
-                        lucban = (luc - 720)/10             //tính lấy lực bắn
+                        lucban = (luc - 720)/10            //tính lấy lực bắn
                         sound();
                         bullets[currentPlayer] = new bullet(nhanvats[0].x,nhanvats[0].y,20,gocbans[currentPlayer].alpha)
                         bullets[currentPlayer].fire();
-                        giatrihuonggio = Math.floor(Math.random()*6);
                         currentPlayer = 1;
 
                     } else
                     if (currentPlayer === 1){
                         luc = kimlucs.getx()
-                        lucban = (luc - 720)/8
+                        lucban = (luc - 720)/10
                         sound();
                         bullets[currentPlayer] = new bullet(nhanvats[1].x,nhanvats[1].y,20,gocbans[currentPlayer].alpha);
                         bullets[currentPlayer].fire();
-                        giatrihuonggio = Math.floor(Math.random()*6);
                         currentPlayer = 0;
                     }
 
@@ -87,10 +94,10 @@
 
         }
 
-
-        window.addEventListener("keydown",sukienbanphim)
+        window.addEventListener("keydown",sukienbanphim);
         paincanvas.width = window.innerWidth;
         paincanvas.height = window.innerHeight;
+
 
 
         let nhanvat = function (x,y,tenhinhanh, cao,rong, mau) {   //nhân vật-----------------
@@ -108,7 +115,6 @@
                 ctx.drawImage(this.image,this.x,this.y,this.cao,this.rong)
             }
 
-
             this.showmau = function () {                                       // vẽ thanh máu
                 ctx.beginPath();
                 ctx.fillStyle = "#FF0000"
@@ -123,6 +129,10 @@
                 }
             }
 
+            this.checkturn = function () {
+                    ctx.font = "40px Georgia";
+                    ctx.fillText("Turn Here", this.x - 10, this.y - 50);
+            }
         }
 
         nhanvats = [];
@@ -131,6 +141,7 @@
 
         nhanvats[0].creatnhanvat();
         nhanvats[1].creatnhanvat();
+
 
 
         let gocban = function(x,y,alpha){              //tạo góc bắn--------------------
@@ -153,6 +164,7 @@
         let gocbans = [];
         gocbans[0] = new gocban(nhanvats[0].x,nhanvats[0].y,Math.PI/4);
         gocbans[1] = new gocban(nhanvats[1].x,nhanvats[1].y,3*Math.PI/4);
+
 
 
         let thuocdo = function(x,y){                            //vẽ hình ảnh thước đo
@@ -185,7 +197,7 @@
 
             this.positon = function () {
                 this.x += this.dx
-                if (this.x < 770 ){
+                if (this.x < 720 ){
                     this.dx = 5;
                 }
                 if (this.x > 1540 ){
@@ -198,74 +210,6 @@
             }
         }
         let kimlucs = new kimluc(720,1050)
-
-
-        let vegio = function(x,y){
-            this.x = x;
-            this.y = y;
-            this.Vg = 0;
-            this.giaitrihuonggio = giatrihuonggio;
-
-            this.creatgio = function () {
-                ctx.beginPath();
-                ctx.fillStyle = "#FF0000"
-                ctx.fillRect(this.x, this.y, 20 ,20);
-                ctx.stroke();
-            }
-
-            this.huonggio = function () {
-                console.log(this.giaitrihuonggio)
-                switch (this.giaitrihuonggio) {
-                    case 0:
-                        return;
-                    case 1:
-                        ctx.beginPath();
-                        ctx.arc(this.x - 30, 20, 10, 0, 2 * Math.PI)
-                        ctx.fill();
-                        ctx.stroke();
-                        return;
-                    case 2:
-                        ctx.beginPath();
-                        ctx.arc(this.x - 30, 20, 10, 0, 2 * Math.PI)
-                        ctx.arc(this.x - 60, 20, 10, 0, 2 * Math.PI)
-                        ctx.fill();
-                        ctx.stroke();
-                        return;
-                    case 3:
-                        ctx.beginPath();
-                        ctx.arc(this.x - 30, 20, 10, 0, 2 * Math.PI)
-                        ctx.arc(this.x - 60, 20, 10, 0, 2 * Math.PI)
-                        ctx.arc(this.x - 90, 20, 10, 0, 2 * Math.PI)
-                        ctx.fill();
-                        ctx.stroke();
-                        return;
-                    case 4:
-                        ctx.beginPath();
-                        ctx.arc(this.x + 50, 20, 10, 0, 2 * Math.PI)
-                        ctx.fill();
-                        ctx.stroke();
-                        return;
-                    case 5:
-                        ctx.beginPath();
-                        ctx.arc(this.x + 50, 20, 10, 0, 2 * Math.PI)
-                        ctx.arc(this.x + 80, 20, 10, 0, 2 * Math.PI)
-                        ctx.fill();
-                        ctx.stroke();
-                        return;
-                    case 6:
-                        ctx.beginPath();
-                        ctx.arc(this.x + 50, 20, 10, 0, 2 * Math.PI)
-                        ctx.arc(this.x + 80, 20, 10, 0, 2 * Math.PI)
-                        ctx.arc(this.x + 110, 20, 10, 0, 2 * Math.PI)
-                        ctx.fill();
-                        ctx.stroke();
-                        return;
-                }
-            }
-        }
-        let vegios = new vegio(paincanvas.width/2, 20)
-
-
 
 
         let bullet = function (x ,y, R, alpha) {         //Đạn----------------------
@@ -324,6 +268,7 @@
                     this.Vy = 0;
 
                     nhanvat.mau -= 40;                      //va chạm mất máu
+                    tiengkeus();
                     if (nhanvat.mau < 0){
                         nhanvat.mau=0
                     }
@@ -342,6 +287,7 @@
                     this.isFire = false;
                 }
             }
+
         }
 
         let bullets = [];
@@ -383,7 +329,6 @@
                     ctx.beginPath()
                     ctx.drawImage(this.image,this.x, this.y,800,700)
                     ctx.closePath()
-                    alert("Ấn chơi lại để bắt đầu ván mới")
                 }
             }
         }
@@ -393,18 +338,70 @@
         chienthangs[1] = new  chienthang(780,250)
 
 
+        let support = function (x , y ) {
+            this.x = x;
+            this.y = y;
+            this.dx = 10;
+            this.image = new Image();
+            this.image.src = "anh/maybay.png"
+            this.image1 = new Image();
+            this.image1.src = "anh/haha.png"
+
+            this.show = function () {
+                    ctx.beginPath()
+                    ctx.font = "30px Georgia";
+                    ctx.fillText("máu", this.x+50, this.y-10);
+                    ctx.drawImage(this.image, this.x , this.y, 150,100)
+                    ctx.closePath()
+            }
+            this.positon = function(){
+                this.x += this.dx;
+                if(this.x > paincanvas.width -150){
+                    this.dx *= -1;
+                    this.image.src = "anh/maybayy.png"
+                }if(this.x < 0){
+                    this.dx *= -1;
+                    this.image.src = "anh/maybay.png"
+                }
+            }
+
+            this.move = function () {
+                this.show()
+                this.positon()
+            }
+
+
+            this.kiemtravacham = function (bullettt, nhanvat) {
+                let distan = (this.x + 75 - bullettt.x)*(this.x + 75 - bullettt.x)+(this.y +50 - bullettt.y)*(this.y +50 - bullettt.y)
+                let R = 100*100
+                if(distan < R){
+                    nhanvat.mau = 100;
+
+                    hinhanhvachams = new hinhanhvacham(this.x, this.y, 200);
+                    hinhanhvachams.startTime = Date.now();
+                    hinhanhvachams.isExist = true;
+
+                    bullettt.x = bullettt.xx;
+                    bullettt.y = bullettt.yy;
+                    bullettt.Vy = 0;
+                    bullettt.isFire = false;
+
+                }
+            }
+        }
+
+        let supports = new support(0 , 150);
 
 
         function update() {                                                 //hàm update
             ctx.clearRect(0, 0,window.innerWidth, window.innerHeight);
-            nhacnens()
             thuocdos.creatthuocdo();
             kimlucs.kimluc();
             kimlucs.positon();
-            vegios.creatgio();
-            vegios.huonggio();
             nhanvats[0].creatnhanvat();
             nhanvats[1].creatnhanvat();
+            supports.move();
+            nhanvats[currentPlayer].checkturn();
             nhanvats[0].showmau();
             nhanvats[1].showmau();
             gocbans[0].paingocban();
@@ -413,6 +410,8 @@
             bullets[1].move();
             bullets[0].kiemtravacham(nhanvats[1])
             bullets[1].kiemtravacham(nhanvats[0])
+            supports.kiemtravacham(bullets[0],nhanvats[0]);
+            supports.kiemtravacham(bullets[1],nhanvats[1]);
             nhanvats[0].checkdie();
             nhanvats[1].checkdie();
             chienthangs[0].show(nhanvats[1]);
